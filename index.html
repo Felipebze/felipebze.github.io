@@ -19,10 +19,18 @@
                 <p class="tagline">Data Scientist & Analyst</p>
                 <p id="bio">Carregando bio do GitHub...</p>
                 
+                <div class="skills-bar">
+                    <span title="Python"><i class="fab fa-python" style="color: #3776AB;"></i></span>
+                    <span title="SQL"><i class="fas fa-database" style="color: #00758F;"></i></span>
+                    <span title="Pandas/Data"><i class="fas fa-table" style="color: #150458;"></i></span>
+                    <span title="Power BI"><i class="fas fa-chart-bar" style="color: #F2C811;"></i></span>
+                    <span title="Git"><i class="fab fa-git-alt" style="color: #F05032;"></i></span>
+                </div>
+
                 <div class="social-links">
-                    <a href="https://github.com/Felipebze" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/felipecienciadedados/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="mailto:felipesp195@gmail.com" title="E-mail"><i class="fas fa-envelope"></i></a>
+                    <a href="https://github.com/Felipebze" target="_blank" class="icon-github" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/felipecienciadedados/" target="_blank" class="icon-linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:felipesp195@gmail.com" class="icon-email" title="E-mail"><i class="fas fa-envelope"></i></a>
                 </div>
             </header>
         </div>
@@ -31,12 +39,12 @@
     <main class="container">
         <h2 class="section-title"><i class="fas fa-code-branch"></i> Projetos em Destaque</h2>
         <div id="repos-container" class="repos-grid">
-            <div class="loader">Carregando inteligência...</div>
+            <div class="loader">Analisando dados do GitHub...</div>
         </div>
     </main>
 
     <footer>
-        <p>Desenvolvido por Felipe &bull; 2026</p>
+        <p>Felipe &copy; 2026 &bull; Data Science Portfolio</p>
     </footer>
 
     <script>
@@ -52,36 +60,33 @@
                 const user = await userRes.json();
                 const repos = await reposRes.json();
 
-                // Atualiza Perfil
                 document.getElementById('avatar').src = user.avatar_url;
                 document.getElementById('name').innerText = user.name || username;
-                document.getElementById('bio').innerText = user.bio || "Explorando dados para gerar insights.";
+                document.getElementById('bio').innerText = user.bio || "Transformando dados em decisões estratégicas.";
 
-                // Atualiza Repos
                 const container = document.getElementById('repos-container');
                 container.innerHTML = '';
                 
                 repos.forEach((repo, index) => {
-                    const langClass = repo.language ? repo.language.toLowerCase() : 'code';
                     const card = document.createElement('div');
                     card.className = 'repo-card';
                     card.style.animationDelay = `${index * 0.1}s`;
                     
                     card.innerHTML = `
                         <div class="repo-header">
-                            <span class="lang-badge ${langClass}">${repo.language || 'Data'}</span>
+                            <span class="lang-badge">${repo.language || 'Data'}</span>
                             <div class="repo-icons">
                                 <span><i class="far fa-star"></i> ${repo.stargazers_count}</span>
                             </div>
                         </div>
                         <h3>${repo.name.replace(/-/g, ' ')}</h3>
-                        <p>${repo.description || "Projeto de análise de dados e automação."}</p>
-                        <a href="${repo.html_url}" target="_blank" class="btn-repo">Ver no GitHub <i class="fas fa-arrow-right"></i></a>
+                        <p>${repo.description || "Análise de dados avançada e modelagem preditiva."}</p>
+                        <a href="${repo.html_url}" target="_blank" class="btn-repo">Acessar Repositório <i class="fas fa-arrow-right"></i></a>
                     `;
                     container.appendChild(card);
                 });
             } catch (err) {
-                console.error("Erro ao carregar dados:", err);
+                document.getElementById('repos-container').innerHTML = "<p>Erro ao conectar com a API.</p>";
             }
         }
         getGitHubData();
