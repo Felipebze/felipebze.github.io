@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felipe | Data Science Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="glass-bg"></div>
+
+    <section class="profile-card">
+        <div class="container">
+            <header>
+                <img id="avatar" src="" alt="Felipe">
+                <h1 id="name">Felipe</h1>
+                <p class="tagline">Data Scientist & Analyst</p>
+                <p id="bio">Carregando bio do GitHub...</p>
+                
+                <div class="social-links">
+                    <a href="https://github.com/Felipebze" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/felipecienciadedados/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:felipesp195@gmail.com" title="E-mail"><i class="fas fa-envelope"></i></a>
+                </div>
+            </header>
+        </div>
+    </section>
+
+    <main class="container">
+        <h2 class="section-title"><i class="fas fa-code-branch"></i> Projetos em Destaque</h2>
+        <div id="repos-container" class="repos-grid">
+            <div class="loader">Carregando inteligência...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por Felipe &bull; 2026</p>
+    </footer>
+
+    <script>
+        const username = 'Felipebze';
+
+        async function getGitHubData() {
+            try {
+                const [userRes, reposRes] = await Promise.all([
+                    fetch(`https://api.github.com/users/${username}`),
+                    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
+                ]);
+
+                const user = await userRes.json();
+                const repos = await reposRes.json();
+
+                // Atualiza Perfil
+                document.getElementById('avatar').src = user.avatar_url;
+                document.getElementById('name').innerText = user.name || username;
+                document.getElementById('bio').innerText = user.bio || "Explorando dados para gerar insights.";
+
+                // Atualiza Repos
+                const container = document.getElementById('repos-container');
+                container.innerHTML = '';
+                
+                repos.forEach((repo, index) => {
+                    const langClass = repo.language ? repo.language.toLowerCase() : 'code';
+                    const card = document.createElement('div');
+                    card.className = 'repo-card';
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    
+                    card.innerHTML = `
+                        <div class="repo-header">
+                            <span class="lang-badge ${langClass}">${repo.language || 'Data'}</span>
+                            <div class="repo-icons">
+                                <span><i class="far fa-star"></i> ${repo.stargazers_count}</span>
+                            </div>
+                        </div>
+                        <h3>${repo.name.replace(/-/g, ' ')}</h3>
+                        <p>${repo.description || "Projeto de análise de dados e automação."}</p>
+                        <a href="${repo.html_url}" target="_blank" class="btn-repo">Ver no GitHub <i class="fas fa-arrow-right"></i></a>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Erro ao carregar dados:", err);
+            }
+        }
+        getGitHubData();
+    </script>
+</body>
+</html>
